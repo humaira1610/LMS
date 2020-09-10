@@ -14,7 +14,10 @@ import java.sql.SQLException;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -49,6 +52,47 @@ public class Members extends javax.swing.JFrame {
         
     }
     
+    public void findMember(){
+        int c;
+        int id=Integer.parseInt(memberSearchBox.getText());
+        
+        try{
+            st=conn.prepareStatement("select * from members where ID=?");
+            st.setInt(1,id);
+            rs= st.executeQuery();
+            
+            ResultSetMetaData rsd= rs.getMetaData();
+            c=rsd.getColumnCount();
+            
+            DefaultTableModel d=(DefaultTableModel)membersTable.getModel();
+            d.setRowCount(0);
+            
+            while (rs.next()){
+                
+                Vector v2=new Vector();
+                
+                for(int i=1; i<=c;i++)
+                {
+                    v2.add(rs.getString("ID"));
+                    v2.add(rs.getString("Name"));
+                    v2.add(rs.getString("email"));
+                    v2.add(rs.getString("phone"));
+                    v2.add(rs.getString("address"));
+                    
+                    
+                }
+                d.addRow(v2);
+                
+            }
+            
+            
+        } catch(SQLException e){
+            Logger.getLogger(Members.class.getName()).log(Level.SEVERE,null,e);
+            
+        }
+        
+    }
+    
     public void member_load(){
         int c;
         
@@ -59,7 +103,7 @@ public class Members extends javax.swing.JFrame {
             ResultSetMetaData rsd= rs.getMetaData();
             c=rsd.getColumnCount();
             
-            DefaultTableModel d=(DefaultTableModel)jTable1.getModel();
+            DefaultTableModel d=(DefaultTableModel)membersTable.getModel();
             d.setRowCount(0);
             
             while (rs.next()){
@@ -99,30 +143,31 @@ public class Members extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel2 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        memberSearchBox = new javax.swing.JTextField();
+        searchGo = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        membersTable = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         mainMenu = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
+        updateMember = new javax.swing.JButton();
+        deleteMember = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 255, 204));
 
         jPanel2.setBackground(new java.awt.Color(204, 255, 204));
 
-        jTextField1.setText("Search...");
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        memberSearchBox.setText("Search...");
+        memberSearchBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                memberSearchBoxActionPerformed(evt);
             }
         });
 
-        jButton1.setText("Go!");
+        searchGo.setText("Go!");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        membersTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -138,7 +183,7 @@ public class Members extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(membersTable);
 
         jLabel1.setFont(new java.awt.Font("Tw Cen MT Condensed", 1, 36)); // NOI18N
         jLabel1.setText("Library Members");
@@ -157,7 +202,19 @@ public class Members extends javax.swing.JFrame {
             }
         });
 
-        jButton7.setText("jButton7");
+        updateMember.setText("Update");
+        updateMember.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateMemberActionPerformed(evt);
+            }
+        });
+
+        deleteMember.setText("Delete");
+        deleteMember.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteMemberActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -167,9 +224,9 @@ public class Members extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(memberSearchBox, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(searchGo)
                 .addGap(75, 75, 75))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -179,8 +236,11 @@ public class Members extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 617, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel2Layout.createSequentialGroup()
                             .addComponent(jButton6)
-                            .addGap(18, 18, 18)
-                            .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(updateMember, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(22, 22, 22)
+                            .addComponent(deleteMember)
+                            .addGap(2, 2, 2))))
                 .addGap(43, 43, 43))
         );
         jPanel2Layout.setVerticalGroup(
@@ -190,14 +250,15 @@ public class Members extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel1)
-                        .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING))
-                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(searchGo, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(memberSearchBox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(49, 49, 49)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton6)
-                    .addComponent(jButton7))
+                    .addComponent(updateMember)
+                    .addComponent(deleteMember))
                 .addGap(57, 57, 57)
                 .addComponent(mainMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38))
@@ -217,9 +278,9 @@ public class Members extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void memberSearchBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_memberSearchBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_memberSearchBoxActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
@@ -234,6 +295,68 @@ public class Members extends javax.swing.JFrame {
         this.hide();
         mm.setVisible(true);
     }//GEN-LAST:event_mainMenuActionPerformed
+
+    private void updateMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateMemberActionPerformed
+        // TODO add your handling code here:
+        int index = membersTable.getSelectedRow();
+        TableModel model = membersTable.getModel();
+        
+        EditMemberForm em = new EditMemberForm();
+        em.setIndex(index);
+        em.setModel(model);
+        em.setMembersInstance(this);
+        
+        //String id=model.getValueAt(index, 0).toString();
+        String name = model.getValueAt(index, 1).toString();
+        String email = model.getValueAt(index, 2).toString();
+        String phone = model.getValueAt(index, 3).toString();
+        String address = model.getValueAt(index, 4).toString();
+        
+        
+        em.setVisible(true);
+        em.pack();
+        em.setLocationRelativeTo(null);
+        em.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        
+        
+        em.name.setText(name);
+        em.email.setText(email);
+        em.phNo.setText(phone);
+        em.addr.setText(address);
+        
+        
+        
+        
+    }//GEN-LAST:event_updateMemberActionPerformed
+
+    private void deleteMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteMemberActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel d1=(DefaultTableModel)membersTable.getModel();
+        int selectIndex=membersTable.getSelectedRow();
+        int id=Integer.parseInt(d1.getValueAt(selectIndex,0).toString());
+        
+        try {
+            st= conn.prepareStatement("delete from members where ID=?");
+            st.setInt(1,id);
+            
+            int k = st.executeUpdate();
+            
+            if (k==1){
+                JOptionPane.showMessageDialog(this,"Member information deleted.");
+                //this.hide();
+            }
+            else{
+                JOptionPane.showMessageDialog(this,"Error");
+            }
+            
+          
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(EditBookForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+       member_load();
+    }//GEN-LAST:event_deleteMemberActionPerformed
 
     /**
      * @param args the command line arguments
@@ -271,14 +394,15 @@ public class Members extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton deleteMember;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton mainMenu;
+    private javax.swing.JTextField memberSearchBox;
+    private javax.swing.JTable membersTable;
+    private javax.swing.JButton searchGo;
+    private javax.swing.JButton updateMember;
     // End of variables declaration//GEN-END:variables
 }

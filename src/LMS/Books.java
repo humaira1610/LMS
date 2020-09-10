@@ -15,6 +15,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -34,12 +35,10 @@ public class Books extends javax.swing.JFrame {
         book_load();
     }
     
-    EditBookForm ed=new EditBookForm();
-    
-    
     Connection conn;
     PreparedStatement st;
     ResultSet rs;
+    Books books;
     
     public void connect(){
         try {
@@ -51,6 +50,88 @@ public class Books extends javax.swing.JFrame {
             Logger.getLogger(Books.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        
+    }
+    
+    public void findBooksByID(){
+        int c;
+        int id=Integer.parseInt(bookSearchBox.getText());
+        
+        try{
+            st=conn.prepareStatement("select * from books where BookID=?");
+            st.setInt(1,id);
+            rs= st.executeQuery();
+            
+            ResultSetMetaData rsd= rs.getMetaData();
+            c=rsd.getColumnCount();
+            
+            DefaultTableModel d=(DefaultTableModel)booksTable.getModel();
+            d.setRowCount(0);
+            
+            while (rs.next()){
+                
+                Vector v2=new Vector();
+                
+                for(int i=1; i<=c;i++)
+                {
+                    v2.add(rs.getString("BookID"));
+                    v2.add(rs.getString("Title"));
+                    v2.add(rs.getString("Author"));
+                    v2.add(rs.getString("category"));
+                    v2.add(rs.getString("Publisher"));
+                    v2.add(rs.getString("Publication_year"));
+                    
+                }
+                d.addRow(v2);
+                
+            }
+            
+            
+        } catch(SQLException e){
+            Logger.getLogger(Members.class.getName()).log(Level.SEVERE,null,e);
+            
+        }
+        
+    }
+    
+    public void findBooksByCategory(){
+         int c;
+        String cat=bookSearchBox.getText();
+        
+        try{
+            st=conn.prepareStatement("select * from books where category=?");
+            st.setString(1,cat);
+            rs= st.executeQuery();
+            
+            ResultSetMetaData rsd= rs.getMetaData();
+            c=rsd.getColumnCount();
+            
+            DefaultTableModel d=(DefaultTableModel)booksTable.getModel();
+            d.setRowCount(0);
+            
+            while (rs.next()){
+                
+                Vector v2=new Vector();
+                
+                for(int i=1; i<=c;i++)
+                {
+                    v2.add(rs.getString("BookID"));
+                    v2.add(rs.getString("Title"));
+                    v2.add(rs.getString("Author"));
+                    v2.add(rs.getString("category"));
+                    v2.add(rs.getString("Publisher"));
+                    v2.add(rs.getString("Publication_year"));
+                    
+                }
+                d.addRow(v2);
+                
+            }
+            
+            
+        } catch(SQLException e){
+            Logger.getLogger(Members.class.getName()).log(Level.SEVERE,null,e);
+            
+        }
         
     }
     
@@ -109,14 +190,15 @@ public class Books extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        searchBooks = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        bookSearchBox = new javax.swing.JTextField();
+        searchByID = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         booksTable = new javax.swing.JTable();
         addBooks = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        deleteBook = new javax.swing.JButton();
         mainMenu = new javax.swing.JButton();
         updateButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 255, 204));
@@ -148,14 +230,19 @@ public class Books extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 48)); // NOI18N
         jLabel1.setText("Books");
 
-        searchBooks.setText("Search....");
-        searchBooks.addActionListener(new java.awt.event.ActionListener() {
+        bookSearchBox.setText("Search....");
+        bookSearchBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchBooksActionPerformed(evt);
+                bookSearchBoxActionPerformed(evt);
             }
         });
 
-        jButton1.setText("Go!");
+        searchByID.setText("Search byID");
+        searchByID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchByIDActionPerformed(evt);
+            }
+        });
 
         booksTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -187,10 +274,10 @@ public class Books extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Delete books");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        deleteBook.setText("Delete books");
+        deleteBook.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                deleteBookActionPerformed(evt);
             }
         });
 
@@ -208,6 +295,13 @@ public class Books extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Search by Category");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -221,41 +315,43 @@ public class Books extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(deleteBook, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(266, 266, 266))
             .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(mainMenu)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
                         .addComponent(jLabel1)
-                        .addGap(145, 145, 145)
-                        .addComponent(searchBooks, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton1))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(mainMenu)))
-                .addContainerGap(254, Short.MAX_VALUE))
+                        .addGap(85, 85, 85)
+                        .addComponent(bookSearchBox, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchByID, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
+                        .addGap(32, 32, 32)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(searchBooks, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                            .addComponent(bookSearchBox)
+                            .addComponent(searchByID, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(updateButton, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
                     .addComponent(addBooks, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(deleteBook, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(mainMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(89, 89, 89))
@@ -268,7 +364,7 @@ public class Books extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 36, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -288,9 +384,9 @@ public class Books extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void searchBooksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBooksActionPerformed
+    private void bookSearchBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookSearchBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_searchBooksActionPerformed
+    }//GEN-LAST:event_bookSearchBoxActionPerformed
 
     private void addBooksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBooksActionPerformed
         // TODO add your handling code here:
@@ -300,9 +396,36 @@ public class Books extends javax.swing.JFrame {
         
     }//GEN-LAST:event_addBooksActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void deleteBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBookActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+        DefaultTableModel d1=(DefaultTableModel)booksTable.getModel();
+        int selectIndex=booksTable.getSelectedRow();
+        int id=Integer.parseInt(d1.getValueAt(selectIndex,0).toString());
+        
+        try {
+            st= conn.prepareStatement("delete from books where BookID=?");
+            st.setInt(1,id);
+            
+            int k = st.executeUpdate();
+            
+            if (k==1){
+                JOptionPane.showMessageDialog(this,"book information deleted.");
+                //this.hide();
+            }
+            else{
+                JOptionPane.showMessageDialog(this,"Error");
+            }
+            
+          
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(EditBookForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+       book_load();
+       
+        
+    }//GEN-LAST:event_deleteBookActionPerformed
 
     private void mainMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuActionPerformed
         // TODO add your handling code here:
@@ -314,10 +437,14 @@ public class Books extends javax.swing.JFrame {
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
         // TODO add your handling code here:
         int index = booksTable.getSelectedRow();
-        
         TableModel model = booksTable.getModel();
         
-        String id=model.getValueAt(index, 0).toString();
+        EditBookForm ed = new EditBookForm();
+        ed.setIndex(index);
+        ed.setModel(model);
+        ed.setBooksInstance(this);
+        
+        //String id=model.getValueAt(index, 0).toString();
         String title = model.getValueAt(index, 1).toString();
         String author = model.getValueAt(index, 2).toString();
         String category = model.getValueAt(index, 3).toString();
@@ -335,13 +462,23 @@ public class Books extends javax.swing.JFrame {
         ed.category.setText(category);
         ed.publisher.setText(publisher);
         ed.pubYear.setText(pubYear);
-                       
+        
     }//GEN-LAST:event_updateButtonActionPerformed
 
     private void booksTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_booksTableMouseClicked
         // TODO add your handling code here:
          
     }//GEN-LAST:event_booksTableMouseClicked
+
+    private void searchByIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchByIDActionPerformed
+        // TODO add your handling code here:
+        findBooksByID();
+    }//GEN-LAST:event_searchByIDActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        findBooksByCategory();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -380,16 +517,17 @@ public class Books extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBooks;
+    private javax.swing.JTextField bookSearchBox;
     public javax.swing.JTable booksTable;
+    private javax.swing.JButton deleteBook;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton mainMenu;
-    private javax.swing.JTextField searchBooks;
+    private javax.swing.JButton searchByID;
     private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
 }

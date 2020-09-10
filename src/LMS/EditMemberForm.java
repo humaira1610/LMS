@@ -18,12 +18,12 @@ import javax.swing.table.TableModel;
  *
  * @author User
  */
-public class EditBookForm extends javax.swing.JFrame {
+public class EditMemberForm extends javax.swing.JFrame {
 
     /**
      * Creates new form AddBooks
      */
-    public EditBookForm() {
+    public EditMemberForm() {
         initComponents();
         connect();
     }
@@ -34,7 +34,7 @@ public class EditBookForm extends javax.swing.JFrame {
     
     int index;
     TableModel model;
-    Books books;
+    Members member;
     
     public void connect(){
         try {
@@ -55,8 +55,8 @@ public class EditBookForm extends javax.swing.JFrame {
         this.model = model;
     }
     
-    public void setBooksInstance(Books books){
-        this.books = books;
+    public void setMembersInstance(Members member){
+        this.member = member;
     }
 
     /**
@@ -69,37 +69,26 @@ public class EditBookForm extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        title = new javax.swing.JTextField();
-        author = new javax.swing.JTextField();
-        publisher = new javax.swing.JTextField();
-        pubYear = new javax.swing.JTextField();
+        name = new javax.swing.JTextField();
+        email = new javax.swing.JTextField();
+        addr = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         updateInfo = new javax.swing.JButton();
-        category = new javax.swing.JTextField();
+        phNo = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        publisher.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                publisherActionPerformed(evt);
-            }
-        });
-
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel1.setText("title");
+        jLabel1.setText("Name");
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel2.setText("Author");
+        jLabel2.setText("Email");
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel3.setText("Publisher");
-
-        jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel4.setText("Publication year");
+        jLabel3.setText("Address");
 
         updateInfo.setText("Save changes");
         updateInfo.addActionListener(new java.awt.event.ActionListener() {
@@ -108,14 +97,14 @@ public class EditBookForm extends javax.swing.JFrame {
             }
         });
 
-        category.addActionListener(new java.awt.event.ActionListener() {
+        phNo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                categoryActionPerformed(evt);
+                phNoActionPerformed(evt);
             }
         });
 
         jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel5.setText("Category ");
+        jLabel5.setText("Phone Number");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -131,15 +120,13 @@ public class EditBookForm extends javax.swing.JFrame {
                             .addComponent(jLabel1)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel5))
-                            .addComponent(jLabel4))
-                        .addGap(56, 56, 56)
+                                .addComponent(jLabel5)))
+                        .addGap(66, 66, 66)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(category, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
-                            .addComponent(author)
-                            .addComponent(title)
-                            .addComponent(pubYear)
-                            .addComponent(publisher))))
+                            .addComponent(phNo, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
+                            .addComponent(email)
+                            .addComponent(name)
+                            .addComponent(addr))))
                 .addGap(83, 83, 83))
         );
         jPanel1Layout.setVerticalGroup(
@@ -147,25 +134,21 @@ public class EditBookForm extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(100, 100, 100)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(author, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addGap(34, 34, 34)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(category, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(phNo, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(publisher, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addr, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addGap(29, 29, 29)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(pubYear, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addGap(28, 28, 28)
+                .addGap(85, 85, 85)
                 .addComponent(updateInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36))
         );
@@ -199,20 +182,20 @@ public class EditBookForm extends javax.swing.JFrame {
         int id = Integer.parseInt(this.model.getValueAt(selectIndex,0).toString());
         
         
-        String t=title.getText();
-        String auth=author.getText();
-        String cat=category.getText();
-        String pub=publisher.getText();
-        String py=pubYear.getText();
+        String n=name.getText();
+        String em=email.getText();
+        String ph=phNo.getText();
+        String ad=addr.getText();
+        
         
         try {
-            st= conn.prepareStatement("update books set Title=?, Author=?, category=?,Publisher=?, Publication_year=? where BookID=?");
-            st.setString(1,t);
-            st.setString(2,auth);
-            st.setString(3,cat);
-            st.setString(4,pub);
-            st.setString(5,py);
-            st.setInt(6,id);
+            st= conn.prepareStatement("update members set Name=?, email=?, phone=?,address=? where ID=?");
+            st.setString(1,n);
+            st.setString(2,em);
+            st.setString(3,ph);
+            st.setString(4,ad);
+            st.setInt(5,id);
+            
             int k = st.executeUpdate();
             
             if (k==1){
@@ -231,22 +214,15 @@ public class EditBookForm extends javax.swing.JFrame {
           
             
         } catch (SQLException ex) {
-            Logger.getLogger(EditBookForm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EditMemberForm.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-       this.books.book_load();
+       this.member.member_load();
     }//GEN-LAST:event_updateInfoActionPerformed
 
-    
-    
-    
-    private void categoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoryActionPerformed
+    private void phNoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phNoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_categoryActionPerformed
-
-    private void publisherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_publisherActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_publisherActionPerformed
+    }//GEN-LAST:event_phNoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -265,37 +241,37 @@ public class EditBookForm extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EditBookForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditMemberForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EditBookForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditMemberForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EditBookForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditMemberForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EditBookForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditMemberForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EditBookForm().setVisible(true);
+                new EditMemberForm().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JTextField author;
-    public javax.swing.JTextField category;
+    public javax.swing.JTextField addr;
+    public javax.swing.JTextField email;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    public javax.swing.JTextField pubYear;
-    public javax.swing.JTextField publisher;
-    public javax.swing.JTextField title;
+    public javax.swing.JTextField name;
+    public javax.swing.JTextField phNo;
     private javax.swing.JButton updateInfo;
     // End of variables declaration//GEN-END:variables
 }
