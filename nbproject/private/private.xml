@@ -3,13 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/User/Documents/NetBeansProjects/LMS/src/LMS/Members.java</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/LMS/src/LMS/IssuedBooks.java</file>
             <file>file:/C:/Users/User/Documents/NetBeansProjects/LMS/src/LMS/Login.java</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/LMS/src/LMS/startingPage.java</file>
             <file>file:/C:/Users/User/Documents/NetBeansProjects/LMS/src/LMS/AddMembers.java</file>
-            <file>file:/C:/Users/User/Documents/NetBeansProjects/LMS/src/LMS/AddBooks.java</file>
             <file>file:/C:/Users/User/Documents/NetBeansProjects/LMS/src/LMS/MainMenu.java</file>
-            <file>file:/C:/Users/User/Documents/NetBeansProjects/LMS/src/LMS/Books.java</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/LMS/src/LMS/EditMemberForm.java</file>
             <file>file:/C:/Users/User/Documents/NetBeansProjects/LMS/src/LMS/EditBookForm.java</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/LMS/src/LMS/IssueBookForm.java</file>
         </group>
     </open-files>
 </project-private>
