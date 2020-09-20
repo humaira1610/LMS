@@ -166,6 +166,11 @@ public class Members extends javax.swing.JFrame {
         });
 
         searchGo.setText("Go!");
+        searchGo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchGoActionPerformed(evt);
+            }
+        });
 
         membersTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -369,6 +374,17 @@ public class Members extends javax.swing.JFrame {
        member_load();
         }
     }//GEN-LAST:event_deleteMemberActionPerformed
+
+    private void searchGoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchGoActionPerformed
+        // TODO add your handling code here:
+        if(memberSearchBox.getText().isEmpty()){
+        JOptionPane.showMessageDialog(null,"Please enter a search parameter.");
+    }
+        else{
+            findMember();
+        }
+    
+    }//GEN-LAST:event_searchGoActionPerformed
 
     /**
      * @param args the command line arguments

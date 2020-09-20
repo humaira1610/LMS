@@ -135,7 +135,7 @@ public class ReturnedBooks extends javax.swing.JFrame {
             
             
         } catch(SQLException e){
-            Logger.getLogger(Members.class.getName()).log(Level.SEVERE,null,e);
+            Logger.getLogger(ReturnedBooks.class.getName()).log(Level.SEVERE,null,e);
             
         }
             
@@ -350,13 +350,24 @@ public class ReturnedBooks extends javax.swing.JFrame {
 
     private void searchByIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchByIDActionPerformed
         // TODO add your handling code here:
+        if(searchBox.getText().isEmpty()){
+        JOptionPane.showMessageDialog(null,"Please enter a search parameter.");
+    }
+        else{
+        
         findBooksByID();
+        }
     }//GEN-LAST:event_searchByIDActionPerformed
 
     private void searchByMemberIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchByMemberIDActionPerformed
         // TODO add your handling code here:
         int c;
         int id=Integer.parseInt(searchBox.getText());
+        
+        if(searchBox.getText().isEmpty()){
+        JOptionPane.showMessageDialog(null,"Please enter a search parameter.");
+    }
+        else{
         
         try{
             st=conn.prepareStatement("select * from returnedBooks where memberID=?");
@@ -389,8 +400,9 @@ public class ReturnedBooks extends javax.swing.JFrame {
             
             
         } catch(SQLException e){
-            Logger.getLogger(Members.class.getName()).log(Level.SEVERE,null,e);
+            Logger.getLogger(ReturnedBooks.class.getName()).log(Level.SEVERE,null,e);
             
+        }
         }
         
     }//GEN-LAST:event_searchByMemberIDActionPerformed
@@ -399,6 +411,11 @@ public class ReturnedBooks extends javax.swing.JFrame {
         // TODO add your handling code here:
         int c;
         int id=Integer.parseInt(searchBox.getText());
+        
+        if(searchBox.getText().isEmpty()){
+        JOptionPane.showMessageDialog(null,"Please enter a search parameter.");
+    }
+        else{
         
         try{
             st=conn.prepareStatement("select * from returnedBooks where bookID=?");
@@ -431,8 +448,9 @@ public class ReturnedBooks extends javax.swing.JFrame {
             
             
         } catch(SQLException e){
-            Logger.getLogger(Members.class.getName()).log(Level.SEVERE,null,e);
+            Logger.getLogger(ReturnedBooks.class.getName()).log(Level.SEVERE,null,e);
             
+        }
         }
     }//GEN-LAST:event_searchByBookIDActionPerformed
 

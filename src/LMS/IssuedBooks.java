@@ -60,6 +60,11 @@ import javax.swing.table.TableModel;
         int c;
         int id=Integer.parseInt(searchBox.getText());
         
+        if(searchBox.getText().isEmpty()){
+        JOptionPane.showMessageDialog(null,"Please enter a search parameter.");
+    }
+        else{
+        
         try{
             st=conn.prepareStatement("select * from issuedBooks where issueID=?");
             st.setInt(1,id);
@@ -96,6 +101,7 @@ import javax.swing.table.TableModel;
         }
         
     }
+    }
     
     public void returnBook(){
         
@@ -123,7 +129,7 @@ import javax.swing.table.TableModel;
           
             
         } catch (SQLException ex) {
-            Logger.getLogger(EditBookForm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(IssuedBooks.class.getName()).log(Level.SEVERE, null, ex);
         }
         issued_book_load();
     }
@@ -420,7 +426,12 @@ import javax.swing.table.TableModel;
 
     private void searchByIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchByIDActionPerformed
         // TODO add your handling code here:
+        if(searchBox.getText().isEmpty()){
+        JOptionPane.showMessageDialog(null,"Please enter a search parameter.");
+    }
+        else{
         findBooksByIssueID();
+        }
     }//GEN-LAST:event_searchByIDActionPerformed
 
     private void calculateFineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateFineActionPerformed
@@ -491,6 +502,10 @@ import javax.swing.table.TableModel;
         int c;
         int id=Integer.parseInt(searchBox.getText());
         
+        if(searchBox.getText().isEmpty()){
+        JOptionPane.showMessageDialog(null,"Please enter a search parameter.");
+    }
+        else{
         try{
             st=conn.prepareStatement("select * from issuedBooks where memberID=?");
             st.setInt(1,id);
@@ -525,6 +540,7 @@ import javax.swing.table.TableModel;
             Logger.getLogger(IssuedBooks.class.getName()).log(Level.SEVERE,null,e);
             
         }
+        }
         
     }//GEN-LAST:event_searchByMemberIDActionPerformed
 
@@ -532,6 +548,11 @@ import javax.swing.table.TableModel;
         // TODO add your handling code here:
         int c;
         int id=Integer.parseInt(searchBox.getText());
+        
+        if(searchBox.getText().isEmpty()){
+        JOptionPane.showMessageDialog(null,"Please enter a search parameter.");
+    }
+        else{
         
         try{
             st=conn.prepareStatement("select * from issuedBooks where bookID=?");
@@ -566,6 +587,7 @@ import javax.swing.table.TableModel;
         } catch(SQLException e){
             Logger.getLogger(IssuedBooks.class.getName()).log(Level.SEVERE,null,e);
             
+        }
         }
     }//GEN-LAST:event_searchByBookIDActionPerformed
 

@@ -57,6 +57,11 @@ public class Books extends javax.swing.JFrame {
         int c;
         int id=Integer.parseInt(bookSearchBox.getText());
         
+        if(bookSearchBox.getText().isEmpty()){
+        JOptionPane.showMessageDialog(null,"Please enter a search parameter.");
+    }
+        else{
+        
         try{
             st=conn.prepareStatement("select * from books where BookID=?");
             st.setInt(1,id);
@@ -91,12 +96,17 @@ public class Books extends javax.swing.JFrame {
             Logger.getLogger(Members.class.getName()).log(Level.SEVERE,null,e);
             
         }
+        }
         
     }
     
     public void findBooksByCategory(){
          int c;
         String cat=bookSearchBox.getText();
+        if(bookSearchBox.getText().isEmpty()){
+        JOptionPane.showMessageDialog(null,"Please enter a search parameter.");
+    }
+        else{
         
         try{
             st=conn.prepareStatement("select * from books where category=?");
@@ -132,12 +142,18 @@ public class Books extends javax.swing.JFrame {
             Logger.getLogger(Members.class.getName()).log(Level.SEVERE,null,e);
             
         }
+        }
         
     }
     
     public void findBooksByAuthor(){
          int c;
         String auth=bookSearchBox.getText();
+        
+        if(bookSearchBox.getText().isEmpty()){
+        JOptionPane.showMessageDialog(null,"Please enter a search parameter.");
+    }
+        else{
         
         try{
             st=conn.prepareStatement("select * from books where Author=?");
@@ -173,6 +189,7 @@ public class Books extends javax.swing.JFrame {
             Logger.getLogger(Books.class.getName()).log(Level.SEVERE,null,e);
             
         }
+       }
         
     }
     

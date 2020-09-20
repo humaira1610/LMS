@@ -378,7 +378,7 @@ public class Users extends javax.swing.JFrame {
           
             
         } catch (SQLException ex) {
-            Logger.getLogger(EditUserForm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Users.class.getName()).log(Level.SEVERE, null, ex);
         }
         
        user_load();
@@ -387,9 +387,13 @@ public class Users extends javax.swing.JFrame {
 
     private void searchGoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchGoActionPerformed
         // TODO add your handling code here:
+        if(searchBox.getText().isEmpty()){
+        JOptionPane.showMessageDialog(null,"Please enter a search parameter.");
+    }
+        else{
         findUser();
-        
-        
+        }
+         
     }//GEN-LAST:event_searchGoActionPerformed
 
     private void searchBoxFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchBoxFocusGained
