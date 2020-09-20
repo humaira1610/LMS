@@ -273,6 +273,11 @@ public class Books extends javax.swing.JFrame {
         jLabel1.setText("Books");
 
         bookSearchBox.setText("Search....");
+        bookSearchBox.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                bookSearchBoxFocusGained(evt);
+            }
+        });
         bookSearchBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bookSearchBoxActionPerformed(evt);
@@ -549,6 +554,11 @@ public class Books extends javax.swing.JFrame {
         // TODO add your handling code here:
         findBooksByAuthor();
     }//GEN-LAST:event_searchByAuthorActionPerformed
+
+    private void bookSearchBoxFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bookSearchBoxFocusGained
+        // TODO add your handling code here:
+        bookSearchBox.setText("");
+    }//GEN-LAST:event_bookSearchBoxFocusGained
 
     /**
      * @param args the command line arguments

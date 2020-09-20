@@ -58,7 +58,7 @@ import javax.swing.table.TableModel;
     
     public void findBooksByIssueID(){
         int c;
-        int id=Integer.parseInt(bookSearchBox.getText());
+        int id=Integer.parseInt(searchBox.getText());
         
         try{
             st=conn.prepareStatement("select * from issuedBooks where issueID=?");
@@ -183,7 +183,7 @@ import javax.swing.table.TableModel;
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        bookSearchBox = new javax.swing.JTextField();
+        searchBox = new javax.swing.JTextField();
         searchByID = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         issuedBooksTable = new javax.swing.JTable();
@@ -224,10 +224,15 @@ import javax.swing.table.TableModel;
         jLabel1.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 48)); // NOI18N
         jLabel1.setText("Issued books");
 
-        bookSearchBox.setText("Search....");
-        bookSearchBox.addActionListener(new java.awt.event.ActionListener() {
+        searchBox.setText("Search....");
+        searchBox.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                searchBoxFocusGained(evt);
+            }
+        });
+        searchBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bookSearchBoxActionPerformed(evt);
+                searchBoxActionPerformed(evt);
             }
         });
 
@@ -313,7 +318,7 @@ import javax.swing.table.TableModel;
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(56, 56, 56)
-                        .addComponent(bookSearchBox, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(searchBox, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(searchByID)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -342,7 +347,7 @@ import javax.swing.table.TableModel;
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(32, 32, 32)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(bookSearchBox)
+                            .addComponent(searchBox)
                             .addComponent(searchByID, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(searchByMemberID, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(searchByBookID, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -389,9 +394,9 @@ import javax.swing.table.TableModel;
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void bookSearchBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookSearchBoxActionPerformed
+    private void searchBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_bookSearchBoxActionPerformed
+    }//GEN-LAST:event_searchBoxActionPerformed
 
     private void addBooksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBooksActionPerformed
         // TODO add your handling code here:
@@ -484,7 +489,7 @@ import javax.swing.table.TableModel;
     private void searchByMemberIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchByMemberIDActionPerformed
         // TODO add your handling code here:
         int c;
-        int id=Integer.parseInt(bookSearchBox.getText());
+        int id=Integer.parseInt(searchBox.getText());
         
         try{
             st=conn.prepareStatement("select * from issuedBooks where memberID=?");
@@ -526,7 +531,7 @@ import javax.swing.table.TableModel;
     private void searchByBookIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchByBookIDActionPerformed
         // TODO add your handling code here:
         int c;
-        int id=Integer.parseInt(bookSearchBox.getText());
+        int id=Integer.parseInt(searchBox.getText());
         
         try{
             st=conn.prepareStatement("select * from issuedBooks where bookID=?");
@@ -563,6 +568,11 @@ import javax.swing.table.TableModel;
             
         }
     }//GEN-LAST:event_searchByBookIDActionPerformed
+
+    private void searchBoxFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchBoxFocusGained
+        // TODO add your handling code here:
+        searchBox.setText("");
+    }//GEN-LAST:event_searchBoxFocusGained
 
     /**
      * @param args the command line arguments
@@ -605,7 +615,6 @@ import javax.swing.table.TableModel;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBooks;
-    private javax.swing.JTextField bookSearchBox;
     private javax.swing.JButton calculateFine;
     public javax.swing.JTable issuedBooksTable;
     private javax.swing.JLabel jLabel1;
@@ -615,6 +624,7 @@ import javax.swing.table.TableModel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton mainMenu;
     private javax.swing.JButton retBoook;
+    private javax.swing.JTextField searchBox;
     private javax.swing.JButton searchByBookID;
     private javax.swing.JButton searchByID;
     private javax.swing.JButton searchByMemberID;

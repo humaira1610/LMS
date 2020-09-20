@@ -58,7 +58,7 @@ public class ReturnedBooks extends javax.swing.JFrame {
     
     public void findBooksByID(){
         int c;
-        int id=Integer.parseInt(bookSearchBox.getText());
+        int id=Integer.parseInt(searchBox.getText());
         
         try{
             st=conn.prepareStatement("select * from returnedBooks where issueID=?");
@@ -157,7 +157,7 @@ public class ReturnedBooks extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        bookSearchBox = new javax.swing.JTextField();
+        searchBox = new javax.swing.JTextField();
         searchByID = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         returnedBooksTable = new javax.swing.JTable();
@@ -195,10 +195,15 @@ public class ReturnedBooks extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 48)); // NOI18N
         jLabel1.setText("Returned books/Borrow history");
 
-        bookSearchBox.setText("Search....");
-        bookSearchBox.addActionListener(new java.awt.event.ActionListener() {
+        searchBox.setText("Search....");
+        searchBox.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                searchBoxFocusGained(evt);
+            }
+        });
+        searchBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bookSearchBoxActionPerformed(evt);
+                searchBoxActionPerformed(evt);
             }
         });
 
@@ -263,7 +268,7 @@ public class ReturnedBooks extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(26, 26, 26)
-                        .addComponent(bookSearchBox, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(searchBox, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(searchByID)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -284,7 +289,7 @@ public class ReturnedBooks extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(32, 32, 32)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(bookSearchBox)
+                            .addComponent(searchBox)
                             .addComponent(searchByID, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(searchByMemberID, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(searchByBookID, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -327,9 +332,9 @@ public class ReturnedBooks extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void bookSearchBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookSearchBoxActionPerformed
+    private void searchBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_bookSearchBoxActionPerformed
+    }//GEN-LAST:event_searchBoxActionPerformed
 
     private void mainMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuActionPerformed
         // TODO add your handling code here:
@@ -351,7 +356,7 @@ public class ReturnedBooks extends javax.swing.JFrame {
     private void searchByMemberIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchByMemberIDActionPerformed
         // TODO add your handling code here:
         int c;
-        int id=Integer.parseInt(bookSearchBox.getText());
+        int id=Integer.parseInt(searchBox.getText());
         
         try{
             st=conn.prepareStatement("select * from returnedBooks where memberID=?");
@@ -393,7 +398,7 @@ public class ReturnedBooks extends javax.swing.JFrame {
     private void searchByBookIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchByBookIDActionPerformed
         // TODO add your handling code here:
         int c;
-        int id=Integer.parseInt(bookSearchBox.getText());
+        int id=Integer.parseInt(searchBox.getText());
         
         try{
             st=conn.prepareStatement("select * from returnedBooks where bookID=?");
@@ -430,6 +435,11 @@ public class ReturnedBooks extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_searchByBookIDActionPerformed
+
+    private void searchBoxFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchBoxFocusGained
+        // TODO add your handling code here:
+        searchBox.setText("");
+    }//GEN-LAST:event_searchBoxFocusGained
 
     /**
      * @param args the command line arguments
@@ -475,7 +485,6 @@ public class ReturnedBooks extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField bookSearchBox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -483,6 +492,7 @@ public class ReturnedBooks extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton mainMenu;
     public javax.swing.JTable returnedBooksTable;
+    private javax.swing.JTextField searchBox;
     private javax.swing.JButton searchByBookID;
     private javax.swing.JButton searchByID;
     private javax.swing.JButton searchByMemberID;

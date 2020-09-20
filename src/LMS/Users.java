@@ -54,7 +54,7 @@ public class Users extends javax.swing.JFrame {
     
     public void findUser(){
         int c;
-        int id=Integer.parseInt(memberSearchBox.getText());
+        int id=Integer.parseInt(searchBox.getText());
         
         try{
             st=conn.prepareStatement("select * from users where id=?");
@@ -147,7 +147,7 @@ public class Users extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel2 = new javax.swing.JPanel();
-        memberSearchBox = new javax.swing.JTextField();
+        searchBox = new javax.swing.JTextField();
         searchGo = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         usersTable = new javax.swing.JTable();
@@ -162,10 +162,15 @@ public class Users extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(204, 255, 204));
 
-        memberSearchBox.setText("Search...");
-        memberSearchBox.addActionListener(new java.awt.event.ActionListener() {
+        searchBox.setText("Search...");
+        searchBox.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                searchBoxFocusGained(evt);
+            }
+        });
+        searchBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                memberSearchBoxActionPerformed(evt);
+                searchBoxActionPerformed(evt);
             }
         });
 
@@ -233,7 +238,7 @@ public class Users extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(memberSearchBox, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(searchBox, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(searchGo)
                 .addGap(63, 63, 63))
@@ -259,7 +264,7 @@ public class Users extends javax.swing.JFrame {
                         .addGap(27, 27, 27)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(searchGo)
-                            .addComponent(memberSearchBox, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(searchBox, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel1)))
@@ -283,15 +288,15 @@ public class Users extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void memberSearchBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_memberSearchBoxActionPerformed
+    private void searchBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_memberSearchBoxActionPerformed
+    }//GEN-LAST:event_searchBoxActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
@@ -387,6 +392,11 @@ public class Users extends javax.swing.JFrame {
         
     }//GEN-LAST:event_searchGoActionPerformed
 
+    private void searchBoxFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchBoxFocusGained
+        // TODO add your handling code here:
+        searchBox.setText("");
+    }//GEN-LAST:event_searchBoxFocusGained
+
     /**
      * @param args the command line arguments
      */
@@ -430,7 +440,7 @@ public class Users extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton mainMenu;
-    private javax.swing.JTextField memberSearchBox;
+    private javax.swing.JTextField searchBox;
     private javax.swing.JButton searchGo;
     private javax.swing.JButton updateUser;
     private javax.swing.JTable usersTable;
