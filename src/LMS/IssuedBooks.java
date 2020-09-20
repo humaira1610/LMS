@@ -11,6 +11,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,7 +26,7 @@ import javax.swing.table.TableModel;
  *
  * @author User
  */
-public class IssuedBooks extends javax.swing.JFrame {
+    public class IssuedBooks extends javax.swing.JFrame {
     private Object jtRowData;
 
     /**
@@ -38,7 +41,7 @@ public class IssuedBooks extends javax.swing.JFrame {
     Connection conn;
     PreparedStatement st;
     ResultSet rs;
-    IssuedBooks books;
+    IssuedBooks issuedbooks;
     
     public void connect(){
         try {
@@ -53,12 +56,12 @@ public class IssuedBooks extends javax.swing.JFrame {
         
     }
     
-    public void findBooksByID(){
+    public void findBooksByIssueID(){
         int c;
         int id=Integer.parseInt(bookSearchBox.getText());
         
         try{
-            st=conn.prepareStatement("select * from books where BookID=?");
+            st=conn.prepareStatement("select * from issuedBooks where issueID=?");
             st.setInt(1,id);
             rs= st.executeQuery();
             
@@ -74,12 +77,12 @@ public class IssuedBooks extends javax.swing.JFrame {
                 
                 for(int i=1; i<=c;i++)
                 {
-                    v2.add(rs.getString("BookID"));
-                    v2.add(rs.getString("Title"));
-                    v2.add(rs.getString("Author"));
-                    v2.add(rs.getString("category"));
-                    v2.add(rs.getString("Publisher"));
-                    v2.add(rs.getString("Publication_year"));
+                    v2.add(rs.getString("issueID"));
+                    v2.add(rs.getString("memberID"));
+                    v2.add(rs.getString("memberName"));
+                    v2.add(rs.getString("bookID"));
+                    v2.add(rs.getString("issueDate"));
+                    v2.add(rs.getString("returnDate"));
                     
                 }
                 d.addRow(v2);
@@ -88,12 +91,42 @@ public class IssuedBooks extends javax.swing.JFrame {
             
             
         } catch(SQLException e){
-            Logger.getLogger(Members.class.getName()).log(Level.SEVERE,null,e);
+            Logger.getLogger(IssuedBooks.class.getName()).log(Level.SEVERE,null,e);
             
         }
         
     }
     
+    public void returnBook(){
+        
+    }
+    
+    public void deleteIssue(){
+        DefaultTableModel d1=(DefaultTableModel)issuedBooksTable.getModel();
+        int selectIndex=issuedBooksTable.getSelectedRow();
+        int id=Integer.parseInt(d1.getValueAt(selectIndex,0).toString());
+        
+        try {
+            st= conn.prepareStatement("delete from issuedBooks where issueID=?");
+            st.setInt(1,id);
+            
+            /*int k = st.executeUpdate();
+            
+            if (k==1){
+                JOptionPane.showMessageDialog(this,"book information deleted.");
+                //this.hide();
+            }
+            else{
+                JOptionPane.showMessageDialog(this,"Error");
+            }*/
+            
+          
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(EditBookForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        issued_book_load();
+    }
         
     public void issued_book_load(){
         int c;
@@ -128,7 +161,7 @@ public class IssuedBooks extends javax.swing.JFrame {
             
             
         } catch(SQLException e){
-            Logger.getLogger(Members.class.getName()).log(Level.SEVERE,null,e);
+            Logger.getLogger(IssuedBooks.class.getName()).log(Level.SEVERE,null,e);
             
         }
             
@@ -156,6 +189,10 @@ public class IssuedBooks extends javax.swing.JFrame {
         issuedBooksTable = new javax.swing.JTable();
         addBooks = new javax.swing.JButton();
         mainMenu = new javax.swing.JButton();
+        calculateFine = new javax.swing.JButton();
+        retBoook = new javax.swing.JButton();
+        searchByMemberID = new javax.swing.JButton();
+        searchByBookID = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 255, 204));
@@ -238,6 +275,34 @@ public class IssuedBooks extends javax.swing.JFrame {
             }
         });
 
+        calculateFine.setText("Calculate fine");
+        calculateFine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                calculateFineActionPerformed(evt);
+            }
+        });
+
+        retBoook.setText("Return book");
+        retBoook.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                retBoookActionPerformed(evt);
+            }
+        });
+
+        searchByMemberID.setText("Search by member ID");
+        searchByMemberID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchByMemberIDActionPerformed(evt);
+            }
+        });
+
+        searchByBookID.setText("Search by book ID");
+        searchByBookID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchByBookIDActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -245,14 +310,18 @@ public class IssuedBooks extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(mainMenu)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(56, 56, 56)
                         .addComponent(bookSearchBox, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(searchByID)))
-                .addGap(298, 298, Short.MAX_VALUE))
+                        .addComponent(searchByID)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(searchByMemberID)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(searchByBookID))
+                    .addComponent(mainMenu))
+                .addContainerGap(36, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1)
@@ -260,26 +329,35 @@ public class IssuedBooks extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(addBooks, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19))
+                .addGap(18, 18, 18)
+                .addComponent(retBoook)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(calculateFine, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(32, 32, 32)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(bookSearchBox)
-                            .addComponent(searchByID, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(searchByID, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(searchByMemberID, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(searchByBookID, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addComponent(addBooks, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(17, 17, 17)
+                .addGap(28, 28, 28)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addBooks, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(retBoook, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(calculateFine, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15)
                 .addComponent(mainMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(89, 89, 89))
         );
@@ -305,7 +383,7 @@ public class IssuedBooks extends javax.swing.JFrame {
                         .addGap(261, 261, 261)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         pack();
@@ -337,13 +415,159 @@ public class IssuedBooks extends javax.swing.JFrame {
 
     private void searchByIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchByIDActionPerformed
         // TODO add your handling code here:
-        findBooksByID();
+        findBooksByIssueID();
     }//GEN-LAST:event_searchByIDActionPerformed
+
+    private void calculateFineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateFineActionPerformed
+        
+        DateDifference dd=new DateDifference();
+        dd.setVisible(true);
+        
+    }//GEN-LAST:event_calculateFineActionPerformed
+
+    private void retBoookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retBoookActionPerformed
+        // TODO add your handling code here:
+        int index = issuedBooksTable.getSelectedRow();
+        TableModel model = issuedBooksTable.getModel();
+        
+        if(issuedBooksTable.getSelectionModel().isSelectionEmpty()){
+            JOptionPane.showMessageDialog(this,"Please select a row.");
+        }
+        else{
+        
+        int issueid = Integer.parseInt(model.getValueAt(index, 0).toString());
+        int memid = Integer.parseInt(model.getValueAt(index, 1).toString());
+        String memName = model.getValueAt(index, 2).toString();
+        int bookid = Integer.parseInt(model.getValueAt(index, 3).toString());
+        try {
+            Date issueDate = new SimpleDateFormat("yyyy-MM-dd").parse((String)model.getValueAt(index,4 ));
+            Date returnDate= new SimpleDateFormat("yyyy-MM-dd").parse((String)model.getValueAt(index,4 ));
+            
+            String issueDateStr=issueDate.toString();
+            String returnDateStr=returnDate.toString();
+            
+            
+            st= conn.prepareStatement("insert into returnedBooks(issueID,memberID,memberName,bookID,issueDate,returnDate)values(?,?,?,?,?,?)");
+            st.setInt(1,issueid);
+            st.setInt(2,memid);
+            st.setString(3,memName);
+            st.setInt(4,bookid);
+            st.setString(5,issueDateStr);
+            st.setString(6,returnDateStr);
+            
+            int k = st.executeUpdate();
+            
+            if (k==1){
+                JOptionPane.showMessageDialog(this,"Book returned!");
+                //title.requestFocus();
+                //author.requestFocus();
+                //publisher.requestFocus();
+                //pubYear.requestFocus();
+                st= conn.prepareStatement("delete from issuedBooks where issueID=?");
+                st.setInt(1,issueid);
+                st.executeUpdate();
+                
+                IssuedBooks ib=new IssuedBooks();
+                this.hide();
+                ib.setVisible(true);
+                
+            }
+            else{
+                JOptionPane.showMessageDialog(this,"Error");
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(IssuedBooks.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+    }//GEN-LAST:event_retBoookActionPerformed
+
+    private void searchByMemberIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchByMemberIDActionPerformed
+        // TODO add your handling code here:
+        int c;
+        int id=Integer.parseInt(bookSearchBox.getText());
+        
+        try{
+            st=conn.prepareStatement("select * from issuedBooks where memberID=?");
+            st.setInt(1,id);
+            rs= st.executeQuery();
+            
+            ResultSetMetaData rsd= rs.getMetaData();
+            c=rsd.getColumnCount();
+            
+            DefaultTableModel d=(DefaultTableModel)issuedBooksTable.getModel();
+            d.setRowCount(0);
+            
+            while (rs.next()){
+                
+                Vector v2=new Vector();
+                
+                for(int i=1; i<=c;i++)
+                {
+                    v2.add(rs.getString("issueID"));
+                    v2.add(rs.getString("memberID"));
+                    v2.add(rs.getString("memberName"));
+                    v2.add(rs.getString("bookID"));
+                    v2.add(rs.getString("issueDate"));
+                    v2.add(rs.getString("returnDate"));
+                    
+                }
+                d.addRow(v2);
+                
+            }
+            
+            
+        } catch(SQLException e){
+            Logger.getLogger(IssuedBooks.class.getName()).log(Level.SEVERE,null,e);
+            
+        }
+        
+    }//GEN-LAST:event_searchByMemberIDActionPerformed
+
+    private void searchByBookIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchByBookIDActionPerformed
+        // TODO add your handling code here:
+        int c;
+        int id=Integer.parseInt(bookSearchBox.getText());
+        
+        try{
+            st=conn.prepareStatement("select * from issuedBooks where bookID=?");
+            st.setInt(1,id);
+            rs= st.executeQuery();
+            
+            ResultSetMetaData rsd= rs.getMetaData();
+            c=rsd.getColumnCount();
+            
+            DefaultTableModel d=(DefaultTableModel)issuedBooksTable.getModel();
+            d.setRowCount(0);
+            
+            while (rs.next()){
+                
+                Vector v2=new Vector();
+                
+                for(int i=1; i<=c;i++)
+                {
+                    v2.add(rs.getString("issueID"));
+                    v2.add(rs.getString("memberID"));
+                    v2.add(rs.getString("memberName"));
+                    v2.add(rs.getString("bookID"));
+                    v2.add(rs.getString("issueDate"));
+                    v2.add(rs.getString("returnDate"));
+                    
+                }
+                d.addRow(v2);
+                
+            }
+            
+            
+        } catch(SQLException e){
+            Logger.getLogger(IssuedBooks.class.getName()).log(Level.SEVERE,null,e);
+            
+        }
+    }//GEN-LAST:event_searchByBookIDActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[]){
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -376,11 +600,13 @@ public class IssuedBooks extends javax.swing.JFrame {
                 new IssuedBooks().setVisible(true);
             }
         });
+                
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBooks;
     private javax.swing.JTextField bookSearchBox;
+    private javax.swing.JButton calculateFine;
     public javax.swing.JTable issuedBooksTable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
@@ -388,6 +614,9 @@ public class IssuedBooks extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton mainMenu;
+    private javax.swing.JButton retBoook;
+    private javax.swing.JButton searchByBookID;
     private javax.swing.JButton searchByID;
+    private javax.swing.JButton searchByMemberID;
     // End of variables declaration//GEN-END:variables
 }

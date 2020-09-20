@@ -77,6 +77,8 @@ public class Users extends javax.swing.JFrame {
                     v2.add(rs.getString("name"));
                     v2.add(rs.getString("username"));
                     v2.add(rs.getString("password"));
+                    v2.add(rs.getString("phone"));
+                    v2.add(rs.getString("email"));
                     v2.add(rs.getString("usertype"));
                     
                     
@@ -310,6 +312,11 @@ public class Users extends javax.swing.JFrame {
         int index = usersTable.getSelectedRow();
         TableModel model = usersTable.getModel();
         
+        if(usersTable.getSelectionModel().isSelectionEmpty()){
+            JOptionPane.showMessageDialog(this,"Please select a row.");
+        }
+        else{
+        
         EditUserForm eu = new EditUserForm();
         eu.setIndex(index);
         eu.setModel(model);
@@ -334,10 +341,7 @@ public class Users extends javax.swing.JFrame {
         eu.phone.setText(ph);
         eu.email.setText(em);
         
-        
-        
-        
-        
+        }
         
     }//GEN-LAST:event_updateUserActionPerformed
 
@@ -345,6 +349,11 @@ public class Users extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel d1=(DefaultTableModel)usersTable.getModel();
         int selectIndex=usersTable.getSelectedRow();
+        
+        if(usersTable.getSelectionModel().isSelectionEmpty()){
+            JOptionPane.showMessageDialog(this,"Please select a row.");
+        }
+        else{
         int id=Integer.parseInt(d1.getValueAt(selectIndex,0).toString());
         
         try {
@@ -368,6 +377,7 @@ public class Users extends javax.swing.JFrame {
         }
         
        user_load();
+        }
     }//GEN-LAST:event_deleteUserActionPerformed
 
     private void searchGoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchGoActionPerformed

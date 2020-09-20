@@ -29,6 +29,8 @@ public class EditMemberForm extends javax.swing.JFrame {
     }
     
     
+    
+    
     Connection conn;
     PreparedStatement st;
     
@@ -82,6 +84,8 @@ public class EditMemberForm extends javax.swing.JFrame {
         cancelButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(153, 204, 255));
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel1.setText("Name");
@@ -194,6 +198,7 @@ public class EditMemberForm extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     
@@ -249,7 +254,11 @@ public class EditMemberForm extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         // TODO add your handling code here:
+        Members m=new Members();
+        m.setVisible(true);
         setVisible(false);
+       
+        
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**

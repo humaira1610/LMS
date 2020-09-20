@@ -436,6 +436,7 @@ public class Books extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void bookSearchBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookSearchBoxActionPerformed
@@ -454,6 +455,12 @@ public class Books extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel d1=(DefaultTableModel)booksTable.getModel();
         int selectIndex=booksTable.getSelectedRow();
+        
+        if(booksTable.getSelectionModel().isSelectionEmpty()){
+            JOptionPane.showMessageDialog(this,"Please select a row.");
+        }
+        else{
+        
         int id=Integer.parseInt(d1.getValueAt(selectIndex,0).toString());
         
         try {
@@ -477,7 +484,7 @@ public class Books extends javax.swing.JFrame {
         }
         
        book_load();
-       
+        }
         
     }//GEN-LAST:event_deleteBookActionPerformed
 
@@ -493,6 +500,10 @@ public class Books extends javax.swing.JFrame {
         int index = booksTable.getSelectedRow();
         TableModel model = booksTable.getModel();
         
+        if(booksTable.getSelectionModel().isSelectionEmpty()){
+            JOptionPane.showMessageDialog(this,"Please select a row.");
+        }
+        else{
         EditBookForm ed = new EditBookForm();
         ed.setIndex(index);
         ed.setModel(model);
@@ -516,7 +527,7 @@ public class Books extends javax.swing.JFrame {
         ed.category.setText(category);
         ed.publisher.setText(publisher);
         ed.pubYear.setText(pubYear);
-        
+        }
     }//GEN-LAST:event_updateButtonActionPerformed
 
     private void booksTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_booksTableMouseClicked

@@ -149,7 +149,7 @@ public class Members extends javax.swing.JFrame {
         membersTable = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         mainMenu = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        addMember = new javax.swing.JButton();
         updateMember = new javax.swing.JButton();
         deleteMember = new javax.swing.JButton();
 
@@ -195,10 +195,10 @@ public class Members extends javax.swing.JFrame {
             }
         });
 
-        jButton6.setText("Add a member");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        addMember.setText("Add a member");
+        addMember.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                addMemberActionPerformed(evt);
             }
         });
 
@@ -223,24 +223,23 @@ public class Members extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(memberSearchBox, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(searchGo)
                 .addGap(75, 75, 75))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(25, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(mainMenu)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 617, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addComponent(jButton6)
+                            .addComponent(addMember)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(updateMember, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(22, 22, 22)
-                            .addComponent(deleteMember)
-                            .addGap(2, 2, 2))))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(deleteMember, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(43, 43, 43))
         );
         jPanel2Layout.setVerticalGroup(
@@ -259,7 +258,7 @@ public class Members extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton6)
+                    .addComponent(addMember)
                     .addComponent(updateMember)
                     .addComponent(deleteMember))
                 .addGap(57, 57, 57)
@@ -271,7 +270,7 @@ public class Members extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -285,12 +284,12 @@ public class Members extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_memberSearchBoxActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void addMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMemberActionPerformed
         // TODO add your handling code here:
         AddMembers am=new AddMembers();
         this.hide();
         am.setVisible(true);
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }//GEN-LAST:event_addMemberActionPerformed
 
     private void mainMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuActionPerformed
         // TODO add your handling code here:
@@ -303,6 +302,11 @@ public class Members extends javax.swing.JFrame {
         // TODO add your handling code here:
         int index = membersTable.getSelectedRow();
         TableModel model = membersTable.getModel();
+        
+        if(membersTable.getSelectionModel().isSelectionEmpty()){
+            JOptionPane.showMessageDialog(this,"Please select a row.");
+        }
+        else{
         
         EditMemberForm em = new EditMemberForm();
         em.setIndex(index);
@@ -326,16 +330,20 @@ public class Members extends javax.swing.JFrame {
         em.email.setText(email);
         em.phNo.setText(phone);
         em.addr.setText(address);
-        
-        
-        
-        
+        }
+                
     }//GEN-LAST:event_updateMemberActionPerformed
 
     private void deleteMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteMemberActionPerformed
         // TODO add your handling code here:
         DefaultTableModel d1=(DefaultTableModel)membersTable.getModel();
         int selectIndex=membersTable.getSelectedRow();
+        
+        if(membersTable.getSelectionModel().isSelectionEmpty()){
+            JOptionPane.showMessageDialog(this,"Please select a row.");
+        }
+        else{
+        
         int id=Integer.parseInt(d1.getValueAt(selectIndex,0).toString());
         
         try {
@@ -359,6 +367,7 @@ public class Members extends javax.swing.JFrame {
         }
         
        member_load();
+        }
     }//GEN-LAST:event_deleteMemberActionPerformed
 
     /**
@@ -397,8 +406,8 @@ public class Members extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addMember;
     private javax.swing.JButton deleteMember;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

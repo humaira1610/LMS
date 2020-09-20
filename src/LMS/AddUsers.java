@@ -212,6 +212,7 @@ public class AddUsers extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -266,6 +267,8 @@ public class AddUsers extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         // TODO add your handling code here:
+        Users u=new Users();
+        u.setVisible(true);
         setVisible(false);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
